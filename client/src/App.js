@@ -31,7 +31,7 @@ function App() {
   return (
     <div className="App">
       <SelectionMenu users={USERS} user={user} handleChange={handleChange} />
-      <PaintAvailabilityTable data={data} user={user} />
+      <PaintAvailabilityTable data={data} user={user} fetchDataFunc={fetchData} />
     </div>
   );
 }

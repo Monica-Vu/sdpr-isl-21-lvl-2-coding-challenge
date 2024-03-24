@@ -5,16 +5,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { PaintAvailabilityRow } from "./PaintAvailabilityRow";
 
-export default function PaintAvailabilityTable({ data, user }) {
+export default function PaintAvailabilityTable({ data, user, fetchDataFunc }) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="paints availability table">
         <TableHead>
           <TableRow>
             <TableCell>Colour</TableCell>
+            <TableCell>Status</TableCell>
             <TableCell>Litres Available</TableCell>
             {user !== "JOHN" && <TableCell>Edit Quantity</TableCell>}
           </TableRow>
@@ -22,19 +22,7 @@ export default function PaintAvailabilityTable({ data, user }) {
         <TableBody>
           {data.map((item) => {
             return (
-              <TableRow key={item.colour}>
-                <TableCell component="th" scope="row">
-                  {item.colour}
-                </TableCell>
-                <TableCell>{item.litres}</TableCell>
-                {user !== "JOHN" && <TableCell>
-                  <TextField id="outlined-basic" variant="outlined" />
-                  {user === "JANE" && <Button variant="contained" sx={{ margin: 1 }}>
-                    Add
-                  </Button>}
-                  <Button variant="contained" sx={{ margin: 1 }}>Subtract</Button>
-                </TableCell>}
-              </TableRow>
+            <PaintAvailabilityRow item={item} user={user} fetchDataFunc={fetchDataFunc} />
             );
           })}
         </TableBody>
