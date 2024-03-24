@@ -24,7 +24,7 @@ function determineStatus(litresNum) {
   }
 }
 
-app.get("/paints", (request, response) => {
+app.get("/api/paints", (request, response) => {
   console.log("paintsAvailability =>", paintsAvailability);
   const result = paintsAvailability.map((paint) => {
   const litresNum = Number(paint.litres);
@@ -39,7 +39,7 @@ app.get("/paints", (request, response) => {
   return;
 });
 
-app.put("/paints/:colour", (request, response) => {
+app.put("/api/paints/:colour", (request, response) => {
   const colour = request.params.colour;
   const paint = paintsAvailability.find((paint) => paint.colour === colour);
   console.log("paint #1 =>", paint);
@@ -68,5 +68,7 @@ app.use(function (req, res, next) {
 //   // render the error page
 //   res.status(err.status || 500);
 // });
+
+app.listen(3001, () => console.log('Server ready on port 3000'));
 
 module.exports = app;

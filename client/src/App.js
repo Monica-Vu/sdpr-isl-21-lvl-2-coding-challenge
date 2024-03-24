@@ -13,7 +13,7 @@ function App() {
   };
 
   const fetchData = () => {
-    fetch("http://localhost:3000/paints")
+    fetch(`${process.env.REACT_APP_API_URL}/api/paints`)
       .then((response) => response.json())
       .then((responseData) => {
         console.log("responseData =>", responseData);

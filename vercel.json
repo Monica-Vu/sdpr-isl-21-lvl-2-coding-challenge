@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+        {
+            "source": "/:path((?!api/).*)",
+            "destination": "https://sdpr-isl-21-lvl-2coding-challenge.vercel.app/:path*"
+        },
+        {
+            "source": "/api/:match*",
+            "destination": "https://sdpr-isl-21-lvl-2coding-challenge-lygi.vercel.app/api/:match*"
+        }
+    ]
+}

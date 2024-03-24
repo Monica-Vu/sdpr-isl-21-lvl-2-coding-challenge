@@ -11,7 +11,7 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
   };
 
   const sendUpdatedQuantity = (newQuantity) => {
-    fetch(`http://localhost:3000/paints/${item.colour}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/paints/${item.colour}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
