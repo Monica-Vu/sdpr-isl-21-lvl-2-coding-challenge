@@ -1,0 +1,4 @@
+.text-field-limited .MuiFormHelperText-root {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }

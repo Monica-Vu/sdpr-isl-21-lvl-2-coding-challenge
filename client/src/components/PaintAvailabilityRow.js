@@ -1,8 +1,10 @@
 import { Button, TextField, TableRow, TableCell } from "@mui/material";
 import React, { useState } from "react";
+import "./PaintAvailabilityRow.css";
 
 export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
   const [quantity, setQuantity] = useState(0);
+  const [quantityError, setQuantityError] = useState(false);
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
@@ -10,29 +12,32 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
 
   const sendUpdatedQuantity = (newQuantity) => {
     fetch(`http://localhost:3000/paints/${item.colour}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ quantity: newQuantity }),
-      })
-        .then((response) => response.json())
-        .then(fetchDataFunc);
-  }
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ quantity: newQuantity }),
+    })
+      .then((response) => response.json())
+      .then(fetchDataFunc);
+  };
 
-  const onHandleSubtraction = (operation) => {
+  const onHandleSubtraction = () => {
     const quantityNum = Number(quantity);
     const litres = Number(item.litres);
 
-    // should handle case where quantityNum > litres. It should throw an error.
-    sendUpdatedQuantity(litres - quantityNum);
+    if (litres >= quantityNum) {
+      sendUpdatedQuantity(litres - quantityNum);
+      setQuantityError(false);
+    } else {
+      setQuantityError(true);
+    }
   };
 
   const onHandleAddition = () => {
     const quantityNum = Number(quantity);
     const litres = Number(item.litres);
 
-    // should handle case where quantityNum > litres. It should throw an error.
     sendUpdatedQuantity(litres + quantityNum);
   };
 
@@ -46,14 +51,25 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
       {user !== "JOHN" && (
         <TableCell>
           <TextField
-            id="outlined-basic"
+            sx={{ width: '25ch' }}
+            className="text-field-limited"
+            id="paint-quantity"
             variant="outlined"
             value={quantity}
             onChange={handleQuantityChange}
             type="number"
+            error={quantityError}
+            helperText={
+              quantityError &&
+              `Cannot have paint quantity greater than current availability. Enter a number less than or equal to ${item.litres}`
+            }
           />
           {user === "JANE" && (
-            <Button variant="contained" sx={{ margin: 1 }} onClick={onHandleAddition}>
+            <Button
+              variant="contained"
+              sx={{ margin: 1 }}
+              onClick={onHandleAddition}
+            >
               Add
             </Button>
           )}

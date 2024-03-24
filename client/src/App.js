@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import "./App.css";
 import PaintAvailabilityTable from "./components/PaintAvailabilityTable.js";
 import SelectionMenu from "./components/SelectionMenu.js";
