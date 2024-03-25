@@ -4,7 +4,7 @@ import "./PaintAvailabilityRow.css";
 
 export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
   const [quantity, setQuantity] = useState(0);
-  const [quantityError, setQuantityError] = useState(false);
+  const [quantityErrorMessage, setQuantityErrorMessage] = useState("");
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
@@ -26,12 +26,15 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
     const quantityNum = Number(quantity);
     const litres = Number(item.litres);
 
-    if ((quantityNum <= 0) || (quantityNum > litres)) {
-      setQuantityError(true)
-    } else {
-      sendUpdatedQuantity(litres - quantityNum);
-      setQuantityError(false);
+    if (quantityNum < 0 || quantityNum > litres) {
+      setQuantityErrorMessage(
+        `Enter a positive number less than or equal to ${item.litres}`
+      );
+      return;
     }
+
+    sendUpdatedQuantity(litres - quantityNum);
+    setQuantityErrorMessage("");
   };
 
   const onHandleAddition = () => {
@@ -39,11 +42,11 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
     const litres = Number(item.litres);
 
     if (quantityNum <= 0) {
-      setQuantityError(true)
-    } else {
-      sendUpdatedQuantity(litres + quantityNum);
-      setQuantityError(false);
+      setQuantityErrorMessage(`Enter a positive number`);
+      return;
     }
+    sendUpdatedQuantity(litres + quantityNum);
+    setQuantityErrorMessage("");
   };
 
   return (
@@ -56,18 +59,15 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
       {user !== "JOHN" && (
         <TableCell>
           <TextField
-            sx={{ width: '25ch' }}
+            sx={{ width: "25ch" }}
             className="text-field-limited"
             id="paint-quantity"
             variant="outlined"
             value={quantity}
             onChange={handleQuantityChange}
             type="number"
-            error={quantityError}
-            helperText={
-              quantityError &&
-              `Enter a positive number less than or equal to ${item.litres}`
-            }
+            error={!!quantityErrorMessage}
+            helperText={quantityErrorMessage}
           />
           {user === "JANE" && (
             <Button

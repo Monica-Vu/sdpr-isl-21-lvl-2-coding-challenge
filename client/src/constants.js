@@ -1,4 +1,5 @@
 export const USERS = ["JOHN", "JANE", "PAINTER"]
+
 export const SAMPLE_TABLE_DATA = [
     {
       colour: "blue",
