@@ -26,11 +26,11 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
     const quantityNum = Number(quantity);
     const litres = Number(item.litres);
 
-    if (litres >= quantityNum) {
+    if ((quantityNum <= 0) || (quantityNum > litres)) {
+      setQuantityError(true)
+    } else {
       sendUpdatedQuantity(litres - quantityNum);
       setQuantityError(false);
-    } else {
-      setQuantityError(true);
     }
   };
 
@@ -38,7 +38,12 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
     const quantityNum = Number(quantity);
     const litres = Number(item.litres);
 
-    sendUpdatedQuantity(litres + quantityNum);
+    if (quantityNum <= 0) {
+      setQuantityError(true)
+    } else {
+      sendUpdatedQuantity(litres + quantityNum);
+      setQuantityError(false);
+    }
   };
 
   return (
@@ -61,7 +66,7 @@ export function PaintAvailabilityRow({ item, user, fetchDataFunc }) {
             error={quantityError}
             helperText={
               quantityError &&
-              `Cannot have paint quantity greater than current availability. Enter a number less than or equal to ${item.litres}`
+              `Enter a positive number less than or equal to ${item.litres}`
             }
           />
           {user === "JANE" && (
